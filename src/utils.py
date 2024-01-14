@@ -5,7 +5,7 @@ import dill
 import numpy as np
 import pandas as pd
 
-from src.exceptions import CustomException
+from src.exception import CustomException
 
 def save_object(file_path,obj): # Used to save an object, used by us to save pickle files
     try:

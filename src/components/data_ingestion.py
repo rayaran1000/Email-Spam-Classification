@@ -1,0 +1,75 @@
+#Importing System Libraries
+import os
+import sys
+from dataclasses import dataclass
+
+#Importing Dataframe handling libraries
+import numpy as np
+import pandas as pd
+
+#Importing logger and exception handlers
+from src.logger import logging
+from src.exception import CustomException
+
+#Scikit Learn libraries and functions
+from sklearn.model_selection import train_test_split
+
+@dataclass
+class DataIngestionConfig: #Defining data paths for raw , train and test data files
+
+    raw_data_path : str = os.path.join('artifacts','raw.csv')
+
+    train_data_path : str = os.path.join('artifacts','train.csv')
+
+    test_data_path : str = os.path.join('artifacts','test.csv')
+
+class DataIngestion:
+
+    def __init__(self):
+
+        self.data_ingestion_config = DataIngestionConfig()
+
+    def initiate_data_ingestion(self):
+        logging.info("Initiated data ingestion")
+
+        try:
+            
+            raw_df = pd.read_csv('notebooks\data\Email Spam.csv')
+
+            X = raw_df['Message']
+            y = raw_df['Category']
+
+            os.makedirs(os.path.dirname(self.data_ingestion_config.raw_data_path),exist_ok=True) # Creating the artifacts directory
+
+            raw_df.to_csv(self.data_ingestion_config.raw_data_path,index=False) # Raw data saved in csv
+
+            logging.info("Initiated train test split")
+            X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42,stratify=y) # Data Split based on target column for equal distribution among train and test data
+
+            #Creating the Train and Test dataframes for saving in csv format
+            train_df = pd.concat([X_train,y_train],axis=1)
+            test_df = pd.concat([X_test,y_test],axis=1)
+
+            train_df.to_csv(self.data_ingestion_config.train_data_path,index=False)
+            test_df.to_csv(self.data_ingestion_config.test_data_path,index=False)
+
+            logging.info("Finished the Data Ingestion Process")
+       
+        except Exception as e:
+            raise CustomException(e,sys)
+        
+
+
+if __name__ == '__main__':
+
+    data_ingestion = DataIngestion()
+
+    data_ingestion.initiate_data_ingestion()
+
+       
+
+
+
+
+
+
