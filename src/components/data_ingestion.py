@@ -14,6 +14,9 @@ from src.exception import CustomException
 #Scikit Learn libraries and functions
 from sklearn.model_selection import train_test_split
 
+#Testing
+from src.components.data_cleaner import DataCleaner
+
 @dataclass
 class DataIngestionConfig: #Defining data paths for raw , train and test data files
 
@@ -50,10 +53,17 @@ class DataIngestion:
             train_df = pd.concat([X_train,y_train],axis=1)
             test_df = pd.concat([X_test,y_test],axis=1)
 
-            train_df.to_csv(self.data_ingestion_config.train_data_path,index=False)
-            test_df.to_csv(self.data_ingestion_config.test_data_path,index=False)
+            train_df.to_csv(self.data_ingestion_config.train_data_path)
+            test_df.to_csv(self.data_ingestion_config.test_data_path)
 
             logging.info("Finished the Data Ingestion Process")
+
+            return (
+
+                train_df,
+                test_df
+
+            )
        
         except Exception as e:
             raise CustomException(e,sys)
@@ -64,7 +74,18 @@ if __name__ == '__main__':
 
     data_ingestion = DataIngestion()
 
-    data_ingestion.initiate_data_ingestion()
+    train_df,test_df = data_ingestion.initiate_data_ingestion()
+
+    data_cleaner = DataCleaner()
+
+    train_df , test_df = data_cleaner.initiate_data_cleaning(train_df,test_df)
+
+    print(train_df)
+
+    print('-'*35)
+    
+    print(test_df)
+    
 
        
 
