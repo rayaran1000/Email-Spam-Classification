@@ -15,7 +15,7 @@ from src.exception import CustomException
 from sklearn.model_selection import train_test_split
 
 #Testing
-from src.components.data_cleaner import DataCleaner
+from src.components.data_transformation import DataTransformation
 
 @dataclass
 class DataIngestionConfig: #Defining data paths for raw , train and test data files
@@ -76,15 +76,14 @@ if __name__ == '__main__':
 
     train_df,test_df = data_ingestion.initiate_data_ingestion()
 
-    data_cleaner = DataCleaner()
+    data_transfomation = DataTransformation()
 
-    train_df , test_df = data_cleaner.initiate_data_cleaning(train_df,test_df)
+    df = data_transfomation.initiate_data_transformation(train_df)
 
-    print(train_df)
-
-    print('-'*35)
+    print(df)
     
-    print(test_df)
+
+
     
 
        

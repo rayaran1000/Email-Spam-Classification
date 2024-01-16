@@ -3,5 +3,6 @@ pandas
 nltk
 dill
 Flask
+spacy
 
 #-e .
