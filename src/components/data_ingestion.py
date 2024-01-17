@@ -78,9 +78,9 @@ if __name__ == '__main__':
 
     data_transfomation = DataTransformation()
 
-    df = data_transfomation.initiate_data_transformation(train_df)
+    cleaned_lemmatized_df = data_transfomation.initiate_data_transformation(train_df)
 
-    print(df)
+    print(cleaned_lemmatized_df)
     
 
 

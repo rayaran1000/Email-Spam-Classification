@@ -40,7 +40,7 @@ class DataTransformationTransformer(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         logging.info("Data transformation pipeline ran successfully")
-        return X.apply(lambda x: " ".join([word.lemma_ for word in self.nlp(x)]))
+        return X['Message'].apply(lambda x: " ".join([word.lemma_ for word in self.nlp(x)]))
 
 class DataTransformationObject:
     def __init__(self):
@@ -49,8 +49,7 @@ class DataTransformationObject:
         self.data_transformation_transformer = DataTransformationTransformer(self.nlp)
 
     def data_transformation_pipeline(self):
-        transform_pipeline = Pipeline(
-            steps=[
+        transform_pipeline = Pipeline([
                 ('cleaning', self.data_cleaning_transformer),
                 ('lemmatizer', self.data_transformation_transformer)
             ]
