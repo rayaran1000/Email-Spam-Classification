@@ -2,16 +2,9 @@
 import os
 import sys
 import string
-from dataclasses import dataclass
-
-#Importing Dataframe handling libraries
-import numpy as np
-import pandas as pd
 
 #Importing logger and exception handlers
 from src.logger import logging
-from src.exception import CustomException
-from src.utils import save_object
 
 #NLTK libraries and functions
 import nltk
@@ -19,43 +12,8 @@ from nltk.tokenize import word_tokenize
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 
-#Importing sklearn library and modules for building Custom Pipeline for Data Cleaning
-from sklearn.pipeline import Pipeline,FunctionTransformer
+#Importing sklearn library and modules for building Custom Transformer for Data Cleaning
 from sklearn.base import BaseEstimator, TransformerMixin
-
-@dataclass
-class DataCleanerConfig:
-
-    cleaner_file_path : str=os.path.join('artifacts','cleaner.pkl')
-
-class DataCleaner:
-
-    def __init__(self):
-
-        self.data_cleaner_config = DataCleanerConfig()
-
-        self.data_cleaner_transformer = DataCleaningTransformer()
-
-
-    def initiate_data_cleaning(self,train_df,test_df):
-
-        try:
-
-            text_column = ['Message']
-
-            train_df['Message_cleaned'] = self.data_cleaner_transformer.fit_transform(train_df[text_column])
-
-            test_df['Message_cleaned'] = self.data_cleaner_transformer.fit_transform(test_df[text_column])
-
-            return (
-                
-                train_df,
-                test_df
-
-            )
-       
-        except Exception as e:
-            raise CustomException(e,sys)
 
 class DataCleanerFunctions:
 

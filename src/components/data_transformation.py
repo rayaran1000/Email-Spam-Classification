@@ -3,17 +3,13 @@ import os
 import sys
 from dataclasses import dataclass
 
-#Importing Dataframe handling libraries
-import numpy as np
-import pandas as pd
-
 #Importing logger and exception handlers
 from src.logger import logging
 from src.exception import CustomException
 from src.utils import save_object
 
 #Scikit Learn libraries and functions
-from sklearn.pipeline import Pipeline,FunctionTransformer
+from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 
 #Importing other modular codes
@@ -39,7 +35,7 @@ class DataTransformationTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        logging.info("Data transformation pipeline ran successfully")
+        
         return X['Message'].apply(lambda x: " ".join([word.lemma_ for word in self.nlp(x)]))
 
 class DataTransformationObject:
@@ -49,11 +45,18 @@ class DataTransformationObject:
         self.data_transformation_transformer = DataTransformationTransformer(self.nlp)
 
     def data_transformation_pipeline(self):
-        transform_pipeline = Pipeline([
+        transform_pipeline = Pipeline(
+            
+            steps=[
+
                 ('cleaning', self.data_cleaning_transformer),
                 ('lemmatizer', self.data_transformation_transformer)
+
             ]
         )
+
+        logging.info("Data transformation pipeline ran successfully")
+
         return transform_pipeline
 
 class DataTransformation:
@@ -61,12 +64,51 @@ class DataTransformation:
         self.data_transformer_config = DataTransformationConfig()
         self.data_transformer_object = DataTransformationObject()
 
-    def initiate_data_transformation(self, train_df):
-        pipeline = self.data_transformer_object.data_transformation_pipeline()
-        text_column = ['Message']
-        train_df['Message_transformed'] = pipeline.fit_transform(train_df[text_column])
-        return train_df
-     
+    def initiate_data_transformation(self, train_df , test_df):
+
+        try:
+            
+            pipeline = self.data_transformer_object.data_transformation_pipeline()
+            
+            text_column = ['Message']
+            
+            train_df['Message_transformed'] = pipeline.fit_transform(train_df[text_column])
+
+            test_df['Message_transformed'] = pipeline.fit_transform(test_df[text_column])
+
+            #Target column encoding ( Spam == 1 , Ham == 0)
+
+            train_df['Spam'] = train_df['Category'].apply(lambda x:1 if x=='spam' else 0)
+
+            test_df['Spam'] = test_df['Category'].apply(lambda x:1 if x=='spam' else 0)
+
+            logging.info("Data Target column encoding done successfully")
+
+            columns = ['Message_transformed' , 'Spam']
+
+            transformed_train_df = train_df[columns]
+
+            transformed_test_df = test_df[columns]
+
+            save_object(
+
+                file_path = self.data_transformer_config.processor_file_path,
+                obj=self.data_transformer_object.data_transformation_pipeline()
+
+            )
+
+            logging.info("Transformation Pipeline saved successfully")
+ 
+            return (
+
+                transformed_train_df,
+                transformed_test_df
+
+            )
+        
+        except Exception as e:
+            raise CustomException(e,sys)
+            
 
 
 
