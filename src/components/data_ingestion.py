@@ -71,22 +71,7 @@ class DataIngestion:
         
 
 
-if __name__ == '__main__':
 
-    data_ingestion = DataIngestion()
-
-    train_df,test_df = data_ingestion.initiate_data_ingestion()
-
-    data_transfomation = DataTransformation()
-
-    cleaned_lemmatized_train_df , cleaned_lemmatized_test_df = data_transfomation.initiate_data_transformation(train_df,test_df)
-
-    model_trainer = ModelTrainer()
-
-    best_model_name , best_model_score = model_trainer.initiate_model_training(cleaned_lemmatized_train_df,cleaned_lemmatized_test_df)
-
-    print('Best Model Name: ',best_model_name)
-    print('Best Model Score: ',best_model_score)
     
 
        
