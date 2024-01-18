@@ -84,12 +84,6 @@ class DataTransformation:
 
             logging.info("Data Target column encoding done successfully")
 
-            columns = ['Message_transformed' , 'Spam']
-
-            transformed_train_df = train_df[columns]
-
-            transformed_test_df = test_df[columns]
-
             save_object(
 
                 file_path = self.data_transformer_config.processor_file_path,
@@ -101,8 +95,8 @@ class DataTransformation:
  
             return (
 
-                transformed_train_df,
-                transformed_test_df
+                train_df,
+                test_df
 
             )
         

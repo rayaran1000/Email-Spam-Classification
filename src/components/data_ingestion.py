@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split
 
 #Testing
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig: #Defining data paths for raw , train and test data files
@@ -80,11 +81,12 @@ if __name__ == '__main__':
 
     cleaned_lemmatized_train_df , cleaned_lemmatized_test_df = data_transfomation.initiate_data_transformation(train_df,test_df)
 
-    print(cleaned_lemmatized_train_df)
-    print(cleaned_lemmatized_test_df)
-    
+    model_trainer = ModelTrainer()
 
+    best_model_name , best_model_score = model_trainer.initiate_model_training(cleaned_lemmatized_train_df,cleaned_lemmatized_test_df)
 
+    print('Best Model Name: ',best_model_name)
+    print('Best Model Score: ',best_model_score)
     
 
        
