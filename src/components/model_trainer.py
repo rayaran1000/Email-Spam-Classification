@@ -88,13 +88,13 @@ class ModelTrainer:
             X_train,X_test,y_train,y_test = self.data_vectorizer.initiate_data_vectorization(train_df,test_df)
 
             models = { # Dictionary of Models we will be trying
-                    "Random Forest" : RandomForestClassifier(),
-                    "Decision Tree" : DecisionTreeClassifier(),
+                    #"Random Forest" : RandomForestClassifier(),
+                    #"Decision Tree" : DecisionTreeClassifier(),
                     "Logistic Regression" : LogisticRegression(),
-                    "K Neighbours Classifier" : KNeighborsClassifier(),
-                    "Adaboost Classifier" : AdaBoostClassifier(),
-                    "Support Vector Classifier" : SVC(),
-                    "Multinomial Bayes" : MultinomialNB(),
+                    #"K Neighbours Classifier" : KNeighborsClassifier(),
+                    #"Adaboost Classifier" : AdaBoostClassifier(),
+                    #"Support Vector Classifier" : SVC(),
+                    #"Multinomial Bayes" : MultinomialNB(),
                 }
         
             params={ # Creating a dictionary with the parameters for each Model(Hyperparameter values)
@@ -131,6 +131,8 @@ class ModelTrainer:
 
             best_model = models[best_model_name]
 
+            best_model.fit(X_train, y_train) # Helps in saving a fitted model as object
+
             logging.info("Best found model on both training and testing datasets")
 
             save_object(# Creating the Model.pkl file corresponding to the best model that we will get
@@ -143,7 +145,7 @@ class ModelTrainer:
             return (
 
                 best_model_name,
-                best_model_score
+                best_model_score,
 
             )
           

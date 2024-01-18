@@ -14,10 +14,6 @@ from src.exception import CustomException
 #Scikit Learn libraries and functions
 from sklearn.model_selection import train_test_split
 
-#Testing
-from src.components.data_transformation import DataTransformation
-from src.components.model_trainer import ModelTrainer
-
 @dataclass
 class DataIngestionConfig: #Defining data paths for raw , train and test data files
 
