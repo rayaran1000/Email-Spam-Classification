@@ -1,5 +1,7 @@
 # Email Spam Classification Project Overview
 
+![image](https://github.com/rayaran1000/Email-Spam-Classification/assets/122597408/dccb1e32-493e-4097-a5de-cd80afc3330b)
+
 ## Primary Objective
 1. **Data Collection:**
    Efficiently gather diverse email samples, including both spam and non-spam (ham) messages, to create a comprehensive dataset.
